@@ -105,6 +105,9 @@ function App() {
   const togglePin = (id) => {
     setNotes(notes.map(note =>
       note.id === id ? { ...note, isPinned: !note.isPinned } : note
+    ));
+  };
+
   const editNote = (note) => {
     setTitle(note.title);
     setContent(note.content);
@@ -120,9 +123,6 @@ function App() {
     setContent("");
     setTags([]);
     setDueDate("");
-    setEditingId(null);
-  };setContent("");
-    setTags([]);
     setEditingId(null);
   };
 
