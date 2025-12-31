@@ -18,6 +18,7 @@ function App() {
   const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState("");
+  const [dueDate, setDueDate] = useState("");
   const [editingId, setEditingId] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(null);
@@ -68,6 +69,7 @@ function App() {
               title,
               content,
               tags,
+              dueDate,
               createdAt: note.createdAt,
               updatedAt: formattedDate,
               isPinned: note.isPinned
@@ -81,6 +83,7 @@ function App() {
           title,
           content,
           tags,
+          dueDate,
           createdAt: formattedDate,
           updatedAt: formattedDate,
           isPinned: false
@@ -89,6 +92,7 @@ function App() {
       setTitle("");
       setContent("");
       setTags([]);
+      setDueDate("");
       setOpenDialog(false);
     }
   };
@@ -101,13 +105,11 @@ function App() {
   const togglePin = (id) => {
     setNotes(notes.map(note =>
       note.id === id ? { ...note, isPinned: !note.isPinned } : note
-    ));
-  };
-
   const editNote = (note) => {
     setTitle(note.title);
     setContent(note.content);
     setTags(note.tags || []);
+    setDueDate(note.dueDate || "");
     setEditingId(note.id);
     setOpenDialog(true);
   };
@@ -116,6 +118,10 @@ function App() {
     setOpenDialog(false);
     setTitle("");
     setContent("");
+    setTags([]);
+    setDueDate("");
+    setEditingId(null);
+  };setContent("");
     setTags([]);
     setEditingId(null);
   };
@@ -192,6 +198,16 @@ function App() {
               onChange={(e) => setContent(e.target.value)}
               placeholder="Note content"
             />
+            <TextField
+              label="Due Date"
+              type="date"
+              fullWidth
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
             <Box>
               <Typography variant="subtitle2" sx={{ mb: 1 }}>Tags</Typography>
               <Box sx={{ display: "flex", gap: 1, mb: 2, flexWrap: "wrap" }}>
@@ -262,6 +278,11 @@ function App() {
                     <Typography variant="caption" color="textSecondary" sx={{ mb: 1, display: "block" }}>
                       Created: {new Date(note.createdAt).toLocaleString()}
                     </Typography>
+                    {note.dueDate && (
+                      <Typography variant="caption" color="error" sx={{ mb: 1, display: "block", fontWeight: "bold" }}>
+                        📅 Due: {new Date(note.dueDate).toLocaleDateString()}
+                      </Typography>
+                    )}
                     {note.updatedAt !== note.createdAt && (
                       <Typography variant="caption" color="textSecondary" sx={{ mb: 2, display: "block" }}>
                         Updated: {new Date(note.updatedAt).toLocaleString()}
